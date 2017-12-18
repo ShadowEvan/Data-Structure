@@ -160,18 +160,23 @@ void DFSTraverse(struct Graph* graph)
         if(visited[v] == FALSE)DFS(graph, v);
 }
 
+// A linked list node to store a queue entry
 typedef struct QNode
 {
     QElemtype data;
     struct QNode* next;
 }QNode, *QueuePtr;
 
+// The queue
+// front stores the front node of linked list
+// rear stores the last node of linked list
 typedef struct
 {
     QueuePtr front;
     QueuePtr rear;
 }LinkQueue;
 
+// A function to create an empty queue
 Status InitQueue(LinkQueue &Q)
 {
     QNode *p;
@@ -183,11 +188,15 @@ Status InitQueue(LinkQueue &Q)
     return OK;
 }
 
+// A function to add an element e to the queue
 Status EnQueue(LinkQueue &Q, QElemtype e)
 {
+    // create a new node
     QNode *p;
     p = (QueuePtr)malloc(sizeof(QNode));
     if(!p)return ERROR;
+
+    // add the new node at the end of queue and change rear
     p->data = e;
     p->next = NULL;
     Q.rear->next = p;
@@ -195,13 +204,19 @@ Status EnQueue(LinkQueue &Q, QElemtype e)
     return OK;
 }
 
+// A function to remove an element e from the queue
 Status DeQueue(LinkQueue &Q, QElemtype &e)
 {
+    // if queue is empty, return ERROR
     if(Q.front == Q.rear)return ERROR;
+
+    // store and move one node after front
     QNode *p;
     p = Q.front->next;
     e = p->data;
     Q.front->next = p->next;
+
+    // if queue becomes empty, then change rear also as front
     if(p == Q.rear)Q.rear = Q.front;
     free(p);
     return OK; 
@@ -209,12 +224,18 @@ Status DeQueue(LinkQueue &Q, QElemtype &e)
 
 void BFSTraverse(Graph* graph)
 {
-    int v, u;
     AdjListNode *w = 0;
+
+    // create a queue for BFS
     LinkQueue Q;
+    InitQueue(Q);
+
+    // mark all the vertices as not visited
+    int v, u;
     visited = (boolean *)malloc(graph->V * sizeof(boolean));
     for(v = 0; v < graph->V; ++v)visited[v] = FALSE;
-    InitQueue(Q);
+
+    // make sure all the vertices will be visited
     for(v = 0; v < graph->V; ++v)
         if(visited[v] == FALSE)
         {
@@ -223,7 +244,11 @@ void BFSTraverse(Graph* graph)
             EnQueue(Q, v);
             while(Q.front != Q.rear)
             {
+                // DeQueue a vertex from queue and u get it
                 DeQueue(Q, u);
+
+                // get all adjacent vertices of the dequeued vertex u
+                // if a adjacent has not visited, then mark it visited and enqueue it
                 for(w = graph->array[u].head; w != NULL; w = w->next)
                     if(visited[w->dest] == FALSE)
                     {
@@ -235,6 +260,7 @@ void BFSTraverse(Graph* graph)
         }
 }
 
+// Driver Program to test above functions
 int main(void)
 {
     // create the graph given
