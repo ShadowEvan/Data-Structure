@@ -132,6 +132,19 @@ void printGraph(struct Graph* graph)
     }
 }
 
+// A function to get the degree of the vertex
+int Degree(struct Graph* graph, int v)
+{
+    int deg = 0;
+    struct AdjListNode* p =graph->array[v].head;
+    while(p->next)
+    {
+        deg++;
+        p = p->next;
+    }
+    return deg;
+}
+
 void DFS(struct Graph* graph, int v)
 {
     AdjListNode* w = 0;
@@ -290,5 +303,6 @@ int main(void)
     // print the adjacency list representation of the above graph
     printGraph(graph);
 
+    printf("\n The degree of vertex 1 is %d", Degree(graph, 1));
     return 0;
 }
