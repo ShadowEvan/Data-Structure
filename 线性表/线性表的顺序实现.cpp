@@ -74,6 +74,15 @@ Status ListDelete_Sq(SqList &L,int i,ElemType &e)
     return OK;
 }
 
+//  在顺序线性表L中查找第1个与e相等的元素的位序
+int LocateElem_Sq(SqList L, ElemType e)
+{
+    int i = 1;
+    while(i <= L.length && L.elem[i-1]!=e)i++;
+    if(i <= L.length)return i;
+    return 0;
+}
+
 // 已知顺序线性表La和Lb的元素按值非递减排列
 // 归并La和Lb得到新的顺序线性表Lc，Lc的元素也按值非递减排列
 void Merge_Sq(SqList La, SqList Lb, SqList &Lc)
