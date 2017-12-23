@@ -5,7 +5,7 @@
 #define OK 1
 #define ERROR 0
 #define TRUE 1
-#define ERROR 0
+#define FALSE 0
 
 typedef int ElemType;
 typedef int Status;
@@ -75,12 +75,12 @@ Status ListDelete_Sq(SqList &L,int i,ElemType &e)
 }
 
 //  在顺序线性表L中查找第1个与e相等的元素的位序
-int LocateElem_Sq(SqList L, ElemType e)
+Status LocateElem_Sq(SqList L, ElemType e)
 {
     int i = 1;
     while(i <= L.length && L.elem[i-1]!=e)i++;
     if(i <= L.length)return i;
-    return 0;
+    return ERROR;
 }
 
 // 已知顺序线性表La和Lb的元素按值非递减排列
