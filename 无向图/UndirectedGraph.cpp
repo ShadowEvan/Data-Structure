@@ -55,7 +55,7 @@ struct Graph* createGraph(int V)
     int i;
     for(i = 0; i < V; ++i)
         {
-            graph->array[i].head = (AdjListNode *)malloc(sizeof(AdjListNode));
+            graph->array[i].head = (struct AdjListNode *)malloc(sizeof(struct AdjListNode));
             graph->array[i].head->next = NULL;
             graph->array[i].head->dest = i;
         }
@@ -91,7 +91,7 @@ void deleteEdge(struct Graph* graph, int src, int dest)
         preNode = preNode->next;
         delNode = preNode->next;
     }
-    if(!delNode) 
+    if(!delNode)
     {
         printf("Not Found!");
         return;
@@ -150,7 +150,7 @@ void DFS(struct Graph* graph, int v)
     AdjListNode* w = 0;
 
     // mark the current node as visited and print it
-    visited[v] = TRUE;  
+    visited[v] = TRUE;
     printf(" Vertex%d  ", v);
 
     // recur for all the vertices adjacent to the vertex
@@ -164,7 +164,7 @@ void DFSTraverse(struct Graph* graph)
 {
     // mark all the vertices as not visited
     int v;
-    visited = (boolean *)malloc(graph->V * sizeof(boolean));    
+    visited = (boolean *)malloc(graph->V * sizeof(boolean));
     for(v = 0; v < graph->V; ++v)visited[v] = FALSE;
 
     // call the recursive helper function
@@ -232,12 +232,12 @@ Status DeQueue(LinkQueue &Q, QElemtype &e)
     // if queue becomes empty, then change rear also as front
     if(p == Q.rear)Q.rear = Q.front;
     free(p);
-    return OK; 
+    return OK;
 }
 
-void BFSTraverse(Graph* graph)
+void BFSTraverse(struct Graph* graph)
 {
-    AdjListNode *w = 0;
+    struct AdjListNode *w = 0;
 
     // create a queue for BFS
     LinkQueue Q;
