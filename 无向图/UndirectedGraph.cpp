@@ -135,7 +135,7 @@ void printGraph(struct Graph* graph)
     }
 }
 
-// A function to get the degree of the vertex
+// A function to get the degree of the vertex 
 int Degree(struct Graph* graph, int v)
 {
     int deg = 0;
@@ -148,6 +148,8 @@ int Degree(struct Graph* graph, int v)
     return deg;
 }
 
+// A function to get the first adjacent vertex of the vertex i
+// if the vertex i has no adjacent vertices, return -1 
 int FirstAdjVex(Graph *graph, int i)
 {
     AdjListNode *p = graph->array[i].head->next;
@@ -155,6 +157,7 @@ int FirstAdjVex(Graph *graph, int i)
     return -1;
 }
 
+// A function to get the next vertex of the vertex j adjacent to vertex i
 int NextAdjVex(Graph *graph, int i, int j)
 {
     AdjListNode *p = graph->array[i].head->next;
@@ -164,6 +167,7 @@ int NextAdjVex(Graph *graph, int i, int j)
     return -1;
 } 
 
+// DFS traversal of the vertices reachable from v
 void DFS(struct Graph* graph, int v)
 {
     int w = 0;
@@ -177,7 +181,6 @@ void DFS(struct Graph* graph, int v)
         if(visited[w] == FALSE) DFS(graph, w);
 }
 
-// DFS traversal of the vertices reachable from v
 // It uses recursive DFS()
 void DFSTraverse(struct Graph* graph)
 {
