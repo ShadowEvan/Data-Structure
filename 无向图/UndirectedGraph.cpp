@@ -63,10 +63,11 @@ struct Graph* createGraph(int V)
 }
 
 // Add an edge to an undirected graph
-void addEdge(struct Graph* graph, int src, int dest)
+Status addEdge(struct Graph* graph, int src, int dest)
 {
     // Add an edge from src to dest. A new node is added to the adjacency
     struct AdjListNode* newNode = newAdjListNode(dest);
+    if(!newNode)return ERROR;
 
     // The node is added at the beginning
     newNode->next = graph->array[src].head->next;
@@ -76,10 +77,11 @@ void addEdge(struct Graph* graph, int src, int dest)
     newNode = newAdjListNode(src);
     newNode->next = graph->array[dest].head->next;
     graph->array[dest].head->next = newNode;
+    return OK;
 }
 
 // Delete an edge from an undirected graph
-void deleteEdge(struct Graph* graph, int src, int dest)
+Status deleteEdge(struct Graph* graph, int src, int dest)
 {
     // Delete an edge from src to dest
     struct AdjListNode* preNode = graph->array[src].head;
@@ -93,8 +95,8 @@ void deleteEdge(struct Graph* graph, int src, int dest)
     }
     if(!delNode)
     {
-        printf("Not Found!");
-        return;
+        printf("Not Found!\n");
+        return ERROR;
     }
 
     // perform the removal
@@ -113,6 +115,7 @@ void deleteEdge(struct Graph* graph, int src, int dest)
     preNode->next = delNode->next;
     free(delNode);
     delNode = NULL;
+    return OK;
 }
 
 // A function to print the adjacency list representation of graph
@@ -145,17 +148,33 @@ int Degree(struct Graph* graph, int v)
     return deg;
 }
 
+int FirstAdjVex(Graph *graph, int i)
+{
+    AdjListNode *p = graph->array[i].head->next;
+    if(p)return p->dest;
+    return -1;
+}
+
+int NextAdjVex(Graph *graph, int i, int j)
+{
+    AdjListNode *p = graph->array[i].head->next;
+    if(!p)return -1;
+    while(p && p->dest != j)p = p->next;
+    if(p && p->next)return p->next->dest;
+    return -1;
+} 
+
 void DFS(struct Graph* graph, int v)
 {
-    AdjListNode* w = 0;
+    int w = 0;
 
     // mark the current node as visited and print it
     visited[v] = TRUE;
     printf(" Vertex%d  ", v);
 
     // recur for all the vertices adjacent to the vertex
-    for(w = graph->array[v].head; w != NULL; w = w->next)
-        if(visited[w->dest] == FALSE) DFS(graph, w->dest);
+    for(w = FirstAdjVex(graph, v); w >=0; w = NextAdjVex(graph, v, w))
+        if(visited[w] == FALSE) DFS(graph, w);
 }
 
 // DFS traversal of the vertices reachable from v
@@ -237,7 +256,7 @@ Status DeQueue(LinkQueue &Q, QElemtype &e)
 
 void BFSTraverse(struct Graph* graph)
 {
-    struct AdjListNode *w = 0;
+    int w = 0;
 
     // create a queue for BFS
     LinkQueue Q;
@@ -262,12 +281,12 @@ void BFSTraverse(struct Graph* graph)
 
                 // get all adjacent vertices of the dequeued vertex u
                 // if a adjacent has not visited, then mark it visited and enqueue it
-                for(w = graph->array[u].head; w != NULL; w = w->next)
-                    if(visited[w->dest] == FALSE)
+                for(w = FirstAdjVex(graph, u); w >= 0; w = NextAdjVex(graph, u, w))
+                    if(visited[w] == FALSE)
                     {
-                        visited[w->dest] = TRUE;
-                        printf(" Vertex%d  ", w->dest);
-                        EnQueue(Q, w->dest);
+                        visited[w] = TRUE;
+                        printf(" Vertex%d  ", w);
+                        EnQueue(Q, w);
                     }
             }
         }
