@@ -13,7 +13,8 @@
             "-g",
             "-Wall",
             "-static-libgcc",
-            "-std=c++17"
+            "-std=c++17",
+            "-fexec-charset=GBK"
         ],    // 编译命令参数
         "type":"shell",
         "group": {
